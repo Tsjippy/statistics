@@ -1,1 +1,1 @@
-A module for the sim-plugin to add signal messaging
+This module stores page visits per user in the db.<br>

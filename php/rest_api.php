@@ -9,7 +9,8 @@ add_filter('sim_allowed_rest_api_urls', function($urls){
     return $urls;
 });
 
-add_action( 'rest_api_init', function () {
+add_action( 'rest_api_init',  __NAMESPACE__.'\restApiInit');
+function restApiInit() {
 	// Check for existing travel request
 	register_rest_route( 
 		RESTAPIPREFIX.'/statistics', 
@@ -26,4 +27,4 @@ add_action( 'rest_api_init', function () {
 			)
 		)
 	);
-} );
+}

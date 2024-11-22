@@ -3,11 +3,12 @@ namespace SIM\STATISTICS;
 use SIM;
 
 // Allow rest api urls for non-logged in users
-add_filter('sim_allowed_rest_api_urls', function($urls){
+add_filter('sim_allowed_rest_api_urls', __NAMESPACE__.'\restApiUrls');
+function restApiUrls($urls){
     $urls[]	= RESTAPIPREFIX.'/statistics/add_page_view';
 
     return $urls;
-});
+}
 
 add_action( 'rest_api_init',  __NAMESPACE__.'\restApiInit');
 function restApiInit() {

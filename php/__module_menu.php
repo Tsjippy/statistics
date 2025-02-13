@@ -9,13 +9,8 @@ DEFINE(__NAMESPACE__.'\MODULE_PATH', plugin_dir_path(__DIR__));
 //module slug is the same as grandparent folder name
 DEFINE(__NAMESPACE__.'\MODULE_SLUG', strtolower(basename(dirname(__DIR__))));
 
-add_filter('sim_submenu_options', __NAMESPACE__.'\moduleOptions', 10, 3);
-function moduleOptions($optionsHtml, $moduleSlug, $settings){
-	//module slug should be the same as grandparent folder name
-	if($moduleSlug != MODULE_SLUG){
-		return $optionsHtml;
-	}
-
+add_filter('sim_submenu_statistics_options', __NAMESPACE__.'\moduleOptions', 10, 2);
+function moduleOptions($optionsHtml, $settings){
 	ob_start();
 	global $wp_roles;
 	?>
@@ -30,16 +25,11 @@ function moduleOptions($optionsHtml, $moduleSlug, $settings){
 		echo "<input type='checkbox' name='view_rights[]' value='$key' $checked> $name<br>";
 	}
 
-	return ob_get_clean();
+	return $optionsHtml.ob_get_clean();
 }
 
-add_filter('sim_module_data', __NAMESPACE__.'\moduleData', 10, 2);
-function moduleData($dataHtml, $moduleSlug){
-	//module slug should be the same as grandparent folder name
-	if($moduleSlug != MODULE_SLUG){
-		return $dataHtml;
-	}
-
+add_filter('sim_module_statistics_data', __NAMESPACE__.'\moduleData');
+function moduleData($html){
 	if(!isset($_POST['exclude-list'])){
 		$_POST['exclude-list']	= '';
 	}
@@ -143,14 +133,11 @@ function moduleData($dataHtml, $moduleSlug){
     </div>
     <?php
 
-	return ob_get_clean();
+	return $html.ob_get_clean();
 }
 
-add_action('sim_module_activated', __NAMESPACE__.'\moduleActivated');
-function moduleActivated($moduleSlug){
-	//module slug should be the same as grandparent folder name
-	if($moduleSlug != MODULE_SLUG)	{return;}
-	
+add_action('sim_module_statistics_activated', __NAMESPACE__.'\moduleActivated');
+function moduleActivated(){
 	$statistics = new Statistics();
 	$statistics->createDbTable();
 }

@@ -17,7 +17,7 @@ function restApiInit() {
 		RESTAPIPREFIX.'/statistics', 
 		'/add_page_view', 
 		array(
-			'methods' 				=> \WP_REST_Server::EDITABLE,
+			'methods' 				=> \WP_REST_Server::CREATABLE,
 			'callback' 				=> function(){
 				$statistics	= new Statistics();
 				$statistics->addPageView();

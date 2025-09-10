@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- minimize calls
 
 ### Fixed
 

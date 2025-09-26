@@ -4,11 +4,16 @@
 ### Added
 
 ### Changed
-- minimize calls
 
 ### Fixed
 
 ### Updated
+
+## [8.0.5] - 2025-09-26
+
+
+### Changed
+- minimize calls
 
 ## [8.0.4] - 2025-02-13
 

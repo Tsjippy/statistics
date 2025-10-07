@@ -4,7 +4,8 @@
   "description": "statistics",
   "main": "./statistics.js",
   "scripts": {
-    "build": "webpack --entry ./statistics.js --output-path . --output-filename statistics.min.js --progress --mode=production --devtool source-map"
+    "build": "webpack --entry ./statistics.js --output-path . --output-filename statistics.min.js --progress --mode=production --devtool source-map",
+    "all": "run-p build"
   },
   "author": "Ewald Harmsen",
   "license": "ISC",

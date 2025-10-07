@@ -17,7 +17,7 @@ function blockRestApiInit() {
 } 
 
 function statisticsWidget(){
-	$viewRoles     = SIM\getModuleOption(MODULE_SLUG, 'view_rights');
+	$viewRoles     = SIM\getModuleOption(MODULE_SLUG, 'view-rights');
     $userRoles     = wp_get_current_user()->roles;
 
     //only continue if we have the right so see the statistics
@@ -50,7 +50,7 @@ function statisticsWidget(){
     ?>
     <div class='pagestatistics'>
         <h4>Page statistics</h4>
-        <table class='statistics_table'>
+        <table class='statistics-table'>
             <tbody>
                 <tr>
                     <td>

@@ -17,12 +17,12 @@ function moduleOptions($optionsHtml, $settings){
     <label>Who should see the statistics?</label><br>
 	<?php
 	foreach($wp_roles->role_names as $key=>$name){
-		if(is_array($settings['view_rights']) && in_array($key, $settings['view_rights'])){
+		if(is_array($settings['view-rights']) && in_array($key, $settings['view-rights'])){
 			$checked = 'checked';
 		}else{
 			$checked = '';
 		}
-		echo "<input type='checkbox' name='view_rights[]' value='$key' $checked> $name<br>";
+		echo "<input type='checkbox' name='view-rights[]' value='$key' $checked> $name<br>";
 	}
 
 	return $optionsHtml.ob_get_clean();
@@ -108,7 +108,7 @@ function moduleData($html){
 			<input type='submit' value='Apply'>
 		</form>
 
-        <table class='statistics_table sim-table'>
+        <table class='statistics-table sim-table'>
 			<thead>
 				<th>URL</th>
 				<th>Total views</th>

@@ -93,7 +93,7 @@ function moduleData($html){
 		<form method='post' id='statistics-overview-settings'>
 			<input type='hidden' name='exclude-list' id='exclude-list' value='<?php echo $_POST['exclude-list'];?>'>
 			<label>
-				<input type='checkbox' name='exclude-editors' value='true' <?php if(!empty($_POST['exclude-editors'])){ echo ' checked';} ?>>
+				<input type='checkbox' name='exclude-editors' value=1 <?php if(!empty($_POST['exclude-editors'])){ echo ' checked';} ?>>
 				Exclude editors
 			</label>
 			<br>

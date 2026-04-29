@@ -1,6 +1,6 @@
 <?php
-namespace SIM\STATISTICS;
-use SIM;
+namespace TSJIPPY\STATISTICS;
+use TSJIPPY;
 
 add_action('init', __NAMESPACE__.'\blockInit');
 function blockInit() {

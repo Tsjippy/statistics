@@ -1,13 +1,13 @@
 <?php
-namespace SIM\STATISTICS;
-use SIM;
+namespace TSJIPPY\STATISTICS;
+use TSJIPPY;
 
 class Statistics {
     public $tableName;
 
     public function __construct(){
         global $wpdb;
-        $this->tableName				= $wpdb->prefix . 'sim_statistics';
+        $this->tableName				= $wpdb->prefix . 'tsjippy_statistics';
     }
 
     /**
@@ -24,9 +24,9 @@ class Statistics {
 
 		$sql = "CREATE TABLE {$this->tableName} (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
-            timecreated datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-            timelastedited datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-            userid mediumint(9) NOT NULL,
+            time_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            time_last_edited datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            user_id mediumint(9) NOT NULL,
             url longtext NOT NULL,
             counter int NOT NULL,
             PRIMARY KEY  (id)
@@ -44,17 +44,17 @@ class Statistics {
         $url            = str_replace(SITEURL,'',$_POST['url']);
         $creationDate	= date("Y-m-d H:i:s");
 
-        $pageViews  = $wpdb->get_var( "SELECT counter FROM {$this->tableName} WHERE userid='$userId' AND url='$url'" );
+        $pageViews  = $wpdb->get_var( "SELECT counter FROM {$this->tableName} WHERE user_id='$userId' AND url='$url'" );
         
         if(is_numeric($pageViews)){
             $wpdb->update(
                 $this->tableName,
                 array(
-                    'timelastedited'=> $creationDate,
+                    'time_last_edited'=> $creationDate,
                     'counter'	 	=> $pageViews + 1
                 ),
                 array(
-                    'userid'		=> $userId,
+                    'user_id'		=> $userId,
                     'url'           => $url,
                 ),
             );
@@ -62,9 +62,9 @@ class Statistics {
             $wpdb->insert(
 				$this->tableName,
 				array(
-                    'timecreated'   => $creationDate,
-                    'timelastedited'=> $creationDate,
-					'userid'		=> $userId,
+                    'time_created'   => $creationDate,
+                    'time_last_edited'=> $creationDate,
+					'user_id'		=> $userId,
                     'url'           => $url,
 					'counter'	    => 1
 				)

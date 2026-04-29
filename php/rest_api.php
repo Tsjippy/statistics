@@ -1,9 +1,9 @@
 <?php
-namespace SIM\STATISTICS;
-use SIM;
+namespace TSJIPPY\STATISTICS;
+use TSJIPPY;
 
 // Allow rest api urls for non-logged in users
-add_filter('sim_allowed_rest_api_urls', __NAMESPACE__.'\restApiUrls');
+add_filter('tsjippy_allowed_rest_api_urls', __NAMESPACE__.'\restApiUrls');
 function restApiUrls($urls){
     $urls[]	= RESTAPIPREFIX.'/statistics/add_page_view';
 

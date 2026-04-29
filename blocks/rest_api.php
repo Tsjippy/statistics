@@ -1,6 +1,6 @@
 <?php
-namespace SIM\STATISTICS;
-use SIM;
+namespace TSJIPPY\STATISTICS;
+use TSJIPPY;
 
 add_action( 'rest_api_init', __NAMESPACE__.'\blockRestApiInit');
 function blockRestApiInit() {
@@ -17,7 +17,7 @@ function blockRestApiInit() {
 } 
 
 function statisticsWidget(){
-	$viewRoles     = SIM\getModuleOption(MODULE_SLUG, 'view-rights');
+	$viewRoles     = SETTINGS['view-rights'] ?? [];
     $userRoles     = wp_get_current_user()->roles;
 
     //only continue if we have the right so see the statistics
@@ -27,10 +27,10 @@ function statisticsWidget(){
     
     global $wpdb;
 
-    $tableName	= $wpdb->prefix . 'sim_statistics';
-    $url        = str_replace(SITEURL,'', SIM\currentUrl());
+    $tableName	= $wpdb->prefix . 'tsjippy_statistics';
+    $url        = str_replace(SITEURL,'', TSJIPPY\currentUrl());
 
-    $pageViews  = $wpdb->get_results( "SELECT * FROM $tableName WHERE url='$url' ORDER BY $tableName.`timelastedited` DESC" );
+    $pageViews  = $wpdb->get_results( "SELECT * FROM $tableName WHERE url='$url' ORDER BY $tableName.`time_last_edited` DESC" );
     
     $totalViews             = 0;
     $uniqueViewsLastMonths  = 0;
@@ -38,7 +38,7 @@ function statisticsWidget(){
     foreach($pageViews as $view){
         $totalViews += $view->counter;
 
-        $date = new \DateTime($view->timelastedited);
+        $date = new \DateTime($view->time_last_edited);
         $interval = $now->diff($date)->format('%m months');
         if($interval<6){
             $uniqueViewsLastMonths++;

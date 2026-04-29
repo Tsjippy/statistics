@@ -1,9 +1,9 @@
 <?php
-namespace SIM\STATISTICS;
-use SIM;
+namespace TSJIPPY\STATISTICS;
+use TSJIPPY;
 
 add_action('wp_enqueue_scripts', __NAMESPACE__.'\loadAssets' );
 function loadAssets(){
     //Load js
-    wp_enqueue_script('sim_statistics_script', SIM\pathToUrl(MODULE_PATH.'js/statistics.min.js'), array(), MODULE_VERSION,true);
+    wp_enqueue_script('tsjippy_statistics_script', TSJIPPY\pathToUrl(PLUGINPATH.'js/statistics.min.js'), array(), PLUGINVERSION,true);
 }

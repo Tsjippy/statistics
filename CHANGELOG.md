@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- module to plugin  Co-authored-by: Copilot <copilot@github.com>
 
 ### Fixed
 

@@ -16,10 +16,10 @@ window.addEventListener("hashchange", function() {
 function sendStatistics(){
     var formData = new FormData();
     formData.append('url', window.location.href);
-    formData.append('_wpnonce', restNonce);
+    formData.append('_wpnonce', tsjippy.restNonce);
 
 	fetch(
-		`${baseUrl}/wp-json${restApiPrefix}/statistics/add_page_view`,
+		`${tsjippy.baseUrl}/wp-json${tsjippy.restApiPrefix}/statistics/add_page_view`,
 		{
 			method: 'POST',
 			credentials: 'same-origin',

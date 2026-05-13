@@ -75,7 +75,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
 
         if(!empty($_POST['months'])){
             $months     = (int) $_POST['months'];
-            $minDate	= Date('Y-m-d', strtotime("- {$months}months"));
+            $minDate	= gmdate('Y-m-d', strtotime("- {$months}months"));
             $query		.= " AND `time_last_edited` > '$minDate'";
         }
 

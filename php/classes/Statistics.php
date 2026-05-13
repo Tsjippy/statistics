@@ -42,7 +42,7 @@ class Statistics {
         global $wpdb;
         $userId         = get_current_user_id();
         $url            = str_replace(SITEURL,'',$_POST['url']);
-        $creationDate	= date("Y-m-d H:i:s");
+        $creationDate	= gmdate("Y-m-d H:i:s");
 
         $pageViews  = $wpdb->get_var( "SELECT counter FROM {$this->tableName} WHERE user_id='$userId' AND url='$url'" );
         

@@ -59,7 +59,7 @@ function statisticsWidget(){
                         <strong>Total views:</strong>
                     </td>
                     <td class='value'>
-                        <?php echo $totalViews;?>
+                        <?php echo esc_attr($totalViews);?>
                     </td>
                 </tr>
                 <tr>
@@ -67,7 +67,7 @@ function statisticsWidget(){
                         <strong>Unique views:</strong>
                     </td>
                     <td class='value'>
-                        <?php echo $uniqueViews;?>
+                        <?php echo esc_attr($uniqueViews);?>
                     </td>
                 </tr>
                 <tr>
@@ -75,7 +75,7 @@ function statisticsWidget(){
                         <strong>Unique views last 6 months:</strong>
                     </td>
                     <td class='value'>
-                        <?php echo $uniqueViewsLastMonths;?>
+                        <?php echo esc_attr($uniqueViewsLastMonths);?>
                     </td>
                 </tr>
             </tbody>

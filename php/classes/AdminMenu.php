@@ -145,7 +145,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
                             <tr>
                                 <td class='url'><?php echo "<a href='$page->url'>".explode('?', $page->url)[0]."</a>";?></td>
                                 <td class='total-views'><?php echo $page->amount?></td>
-                                <td class='unique-views'><?php echo $page->count;?></td>
+                                <td class='unique-views'><?php echo esc_attr($page->count);?></td>
                                 <td class='actions'><button class='small exclude-url' value='<?php echo $page->url; ?>' onclick='addExclude(this)'>Exclude</button></td>
                         </tr>
                             <?php

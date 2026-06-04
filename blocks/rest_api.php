@@ -2,47 +2,47 @@
 namespace TSJIPPY\STATISTICS;
 use TSJIPPY;
 
-add_action( 'rest_api_init', __NAMESPACE__.'\blockRestApiInit');
+add_action('rest_api_init', __NAMESPACE__ . '\blockRestApiInit');
 function blockRestApiInit() {
-	// show schedules
-	register_rest_route(
-		RESTAPIPREFIX.'/statistics',
-		'/page_statistics',
-		array(
-			'methods' 				=> 'GET',
-			'callback' 				=> __NAMESPACE__.'\statisticsWidget',
-			'permission_callback' 	=> function(){
+    // show schedules
+    register_rest_route(
+        RESTAPIPREFIX. '/statistics',
+        '/page_statistics',
+        array(
+            'methods'                 => 'GET',
+            'callback'                 => __NAMESPACE__ . '\statisticsWidget',
+            'permission_callback'     => function () {
                 return current_user_can('read');
             },
-		)
-	);
-} 
+       )
+   );
+}
 
-function statisticsWidget(){
-	$viewRoles     = SETTINGS['view-rights'] ?? [];
+function statisticsWidget() {
+    $viewRoles     = SETTINGS['view-rights'] ?? [];
     $userRoles     = wp_get_current_user()->roles;
 
     //only continue if we have the right so see the statistics
-    if(!array_intersect($viewRoles, $userRoles)){
+    if (!array_intersect($viewRoles, $userRoles)) {
         return '';
     }
-    
+
     global $wpdb;
 
-    $tableName	= $wpdb->prefix . 'tsjippy_statistics';
+    $tableName    = $wpdb->prefix . 'tsjippy_statistics';
     $url        = str_replace(SITEURL,'', TSJIPPY\currentUrl());
 
-    $pageViews  = $wpdb->get_results( "SELECT * FROM $tableName WHERE url='$url' ORDER BY $tableName.`time_last_edited` DESC" );
-    
+    $pageViews  = $wpdb->get_results("SELECT * FROM $tableName WHERE url='$url' ORDER BY $tableName.`time_last_edited` DESC");
+
     $totalViews             = 0;
     $uniqueViewsLastMonths  = 0;
     $now                    = new \DateTime();
-    foreach($pageViews as $view){
+    foreach ($pageViews as $view) {
         $totalViews += $view->counter;
 
         $date = new \DateTime($view->time_last_edited);
         $interval = $now->diff($date)->format('%m months');
-        if($interval<6){
+        if ($interval<6) {
             $uniqueViewsLastMonths++;
         }
     }

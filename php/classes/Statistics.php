@@ -5,24 +5,24 @@ use TSJIPPY;
 class Statistics {
     public $tableName;
 
-    public function __construct(){
+    public function __construct() {
         global $wpdb;
-        $this->tableName				= $wpdb->prefix . 'tsjippy_statistics';
+        $this->tableName                = $wpdb->prefix . 'tsjippy_statistics';
     }
 
     /**
      * Create the statistics table if it does not exist
      */
-    public function createDbTable(){
-		if ( !function_exists( 'maybe_create_table' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		}
-		
-		//only create db if it does not exist
-		global $wpdb;
-		$charsetCollate = $wpdb->get_charset_collate();
+    public function createDbTable() {
+        if ( !function_exists('maybe_create_table')) {
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        }
 
-		$sql = "CREATE TABLE {$this->tableName} (
+        //only create db if it does not exist
+        global $wpdb;
+        $charsetCollate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE {$this->tableName} (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             time_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
             time_last_edited datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -30,45 +30,45 @@ class Statistics {
             url longtext NOT NULL,
             counter int NOT NULL,
             PRIMARY KEY  (id)
-		) $charsetCollate;";
+       ) $charsetCollate;";
 
-		maybe_create_table($this->tableName, $sql );
-	}
+        maybe_create_table($this->tableName, $sql);
+    }
 
     /**
      * Add a viewed paged entry to db
      */
-    public function addPageView(){
+    public function addPageView() {
         global $wpdb;
         $userId         = get_current_user_id();
         $url            = str_replace(SITEURL,'',$_POST['url']);
-        $creationDate	= gmdate("Y-m-d H:i:s");
+        $creationDate    = gmdate("Y-m-d H:i:s");
 
-        $pageViews  = $wpdb->get_var( "SELECT counter FROM {$this->tableName} WHERE user_id='$userId' AND url='$url'" );
-        
-        if(is_numeric($pageViews)){
+        $pageViews  = $wpdb->get_var("SELECT counter FROM {$this->tableName} WHERE user_id='$userId' AND url='$url'");
+
+        if (is_numeric($pageViews)) {
             $wpdb->update(
                 $this->tableName,
                 array(
                     'time_last_edited'=> $creationDate,
-                    'counter'	 	=> $pageViews + 1
-                ),
+                    'counter'         => $pageViews + 1
+               ),
                 array(
-                    'user_id'		=> $userId,
+                    'user_id'        => $userId,
                     'url'           => $url,
-                ),
-            );
+               ),
+           );
         }else{
             $wpdb->insert(
-				$this->tableName,
-				array(
+                $this->tableName,
+                array(
                     'time_created'   => $creationDate,
                     'time_last_edited'=> $creationDate,
-					'user_id'		=> $userId,
+                    'user_id'        => $userId,
                     'url'           => $url,
-					'counter'	    => 1
-				)
-			);
+                    'counter'        => 1
+               )
+           );
         }
     }
 }

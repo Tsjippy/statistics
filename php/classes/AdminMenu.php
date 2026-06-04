@@ -5,39 +5,39 @@ use TSJIPPY;
 use function TSJIPPY\addElement;
 use function TSJIPPY\addRawHtml;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if ( ! defined('ABSPATH')) {
+    exit;
 }
 
 class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
 
     /**
      * AdminMenu constructor.
-     * 
+     *
      * @param array $settings The settings for the plugin
      * @param string $name The name of the plugin
      */
-    public function __construct($settings, $name){
+    public function __construct($settings, $name) {
         parent::__construct($settings, $name);
     }
 
-    public function settings($parent){
+    public function settings($parent) {
         global $wp_roles;
 
         addElement('label', $parent, [], 'Who should see the statistics?');
         addElement('br', $parent);
 
-        foreach($wp_roles->role_names as $key=>$name){
+        foreach ($wp_roles->role_names as $key=>$name) {
             $label  = addElement('label', $parent, [], $name);
             addElement('br', $parent);
 
             $attributes = [
-                'type'  =>'checkbox', 
-                'name'  =>'view-rights[]', 
+                'type'  =>'checkbox',
+                'name'  =>'view-rights[]',
                 'value' => $key
             ];
 
-            if(in_array($key, $this->settings['view-rights'] ?? [])){
+            if (in_array($key, $this->settings['view-rights'] ?? [])) {
                 $attributes['checked'] = 'checked';
             }
 
@@ -47,64 +47,79 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
         return true;
     }
 
-    public function emails($parent){
+    public function emails($parent) {
         return false;
     }
 
-    public function data($parent=''){
-        if(!isset($_POST['exclude-list'])){
-            $_POST['exclude-list']	= '';
+    public function data($parent='') {
+        if (!isset($_POST['exclude-list'])) {
+            $_POST['exclude-list']    = '';
         }
 
         global $wpdb;
 
-        $tableName	= $wpdb->prefix . 'tsjippy_statistics';
+        $tableName    = $wpdb->prefix . 'tsjippy_statistics';
 
         // base query
-        $query		= "SELECT `time_created`,`time_last_edited`, `url`, SUM(`counter`) as amount, count(`user_id`) as count FROM $tableName WHERE `url` NOT LIKE '/?%' AND `url` NOT LIKE '?%' AND `url` NOT LIKE '%/#%'";
+        $query        = "SELECT `time_created`,`time_last_edited`, `url`, SUM(`counter`) as amount, count(`user_id`) as count FROM %i WHERE `url` NOT LIKE '/?%' AND `url` NOT LIKE '?%' AND `url` NOT LIKE '%/#%'";
+        $values    = [
+            $tableName
+        ];
 
         // parse optional queries
-        if(isset($_POST['exclude-editors'])){
+        if (isset($_POST['exclude-editors'])) {
             // Exclude editors
-            $users 		 = implode(',', get_users( array(
-                'role'		=> ['editor'],
-                'fields'	=> 'ID'
-            ) ));
-            $query		.= " AND `user_id` NOT IN ($users)";
+            $users          = get_users(array(
+                'role'        => ['editor'],
+                'fields'    => 'ID'
+           ));
+
+            $placeholders   = implode(', ', array_fill(0, count($users), '%d'));
+            $query        .= " AND `user_id` NOT IN ($placeholders)";
+            $values        = array_merge($values, $users);
         }
 
-        if(!empty($_POST['months'])){
+        if (!empty($_POST['months'])) {
             $months     = (int) $_POST['months'];
-            $minDate	= gmdate('Y-m-d', strtotime("- {$months}months"));
-            $query		.= " AND `time_last_edited` > '$minDate'";
+            $minDate    = gmdate('Y-m-d', strtotime("- {$months}months"));
+            $query        .= " AND `time_last_edited` > %s";
+            $values[]     = $minDate;
         }
 
-        if(!empty($_POST['exclude-list'])){
-            $query		.= " AND `url` NOT IN ('".str_replace(',', "','", $_POST['exclude-list'])."')";
+        if (!empty($_POST['exclude-list'])) {
+            $placeholders   = implode(', ', array_fill(0, count($_POST['exclude-list']), '%d'));
+            $query        .= " AND `url` NOT IN ($placeholders)";
+            $values        = array_merge($values, $_POST['exclude-list']);
         }
 
-        $query		.= " GROUP BY `url` ORDER BY `amount` DESC";
+        $query        .= " GROUP BY `url` ORDER BY `amount` DESC";
 
-        $limit	= 100;
-        if(isset($_POST['max']) && is_numeric($_POST['max'])){
-            $limit	= (int) $_POST['max'];
+        $limit    = 100;
+        if (isset($_POST['max']) && is_numeric($_POST['max'])) {
+            $limit    = (int) $_POST['max'];
         }
-        $query		.= " LIMIT $limit";
+        $query        .= " LIMIT $limit";
 
         // Get the results
-        $pageViews  = $wpdb->get_results( $query );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $pageViews  = $wpdb->get_results(
+            $wpdb->prepare(
+                $query,
+                ...$values
+           )
+        );
 
         ob_start();
         // Add a script to add a page to the exclusion
         ?>
         <script>
-            function addExclude(el){
+            function addExclude(el) {
                 let form = document.getElementById('statistics-overview-settings');
-                let excludeList	= form.querySelector('#exclude-list');
-                if(excludeList.value != ''){
-                    excludeList.value	= excludeList.value+','+el.value;
+                let excludeList    = form.querySelector('#exclude-list');
+                if (excludeList.value != '') {
+                    excludeList.value    = excludeList.value+','+el.value;
                 }else{
-                    excludeList.value	= el.value;
+                    excludeList.value    = el.value;
                 }
 
                 form.submit();
@@ -116,7 +131,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             <form method='post' id='statistics-overview-settings'>
                 <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo $_POST['exclude-list'];?>'>
                 <label>
-                    <input type='checkbox' name='exclude-editors' value=1 <?php if(!empty($_POST['exclude-editors'])){ echo ' checked';} ?>>
+                    <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) { echo ' checked';} ?>>
                     Exclude editors
                 </label>
                 <br>
@@ -125,7 +140,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
                 </label>
                 <br>
                 <label>
-                    Show top <input type='number' name='max' value='<?php if(!isset($_POST['max'])){echo 100;}else{echo $_POST['max'];}?>' style='max-width: 60px;'> pages only
+                    Show top <input type='number' name='max' value='<?php if (!isset($_POST['max'])) {echo 100;}else{echo $_POST['max'];}?>' style='max-width: 60px;'> pages only
                 </label>
                 <br>
                 <input type='submit' value='Apply'>
@@ -140,10 +155,10 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
                 </thead>
                 <tbody>
                     <?php
-                        foreach($pageViews as $page){
+                        foreach ($pageViews as $page) {
                             ?>
                             <tr>
-                                <td class='url'><?php echo "<a href='$page->url'>".explode('?', $page->url)[0]."</a>";?></td>
+                                <td class='url'><?php echo "<a href='$page->url'>" .explode('?', $page->url)[0]. "</a>";?></td>
                                 <td class='total-views'><?php echo $page->amount?></td>
                                 <td class='unique-views'><?php echo esc_attr($page->count);?></td>
                                 <td class='actions'><button class='small exclude-url' value='<?php echo $page->url; ?>' onclick='addExclude(this)'>Exclude</button></td>
@@ -161,7 +176,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
         return true;
     }
 
-    public function functions($parent){
+    public function functions($parent) {
 
         return false;
     }

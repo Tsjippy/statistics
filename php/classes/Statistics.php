@@ -1,11 +1,15 @@
 <?php
+
 namespace TSJIPPY\STATISTICS;
+
 use TSJIPPY;
 
-class Statistics {
+class Statistics
+{
     public $tableName;
 
-    public function __construct() {
+    public function __construct()
+    {
         global $wpdb;
         $this->tableName                = $wpdb->prefix . 'tsjippy_statistics';
     }
@@ -13,8 +17,9 @@ class Statistics {
     /**
      * Create the statistics table if it does not exist
      */
-    public function createDbTable() {
-        if ( !function_exists('maybe_create_table')) {
+    public function createDbTable()
+    {
+        if (!function_exists('maybe_create_table')) {
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         }
 
@@ -38,10 +43,11 @@ class Statistics {
     /**
      * Add a viewed paged entry to db
      */
-    public function addPageView() {
+    public function addPageView()
+    {
         global $wpdb;
         $userId         = get_current_user_id();
-        $url            = str_replace(SITEURL,'',$_POST['url']);
+        $url            = str_replace(SITEURL, '', $_POST['url']);
         $creationDate    = gmdate("Y-m-d H:i:s");
 
         $pageViews  = $wpdb->get_var("SELECT counter FROM {$this->tableName} WHERE user_id='$userId' AND url='$url'");
@@ -50,25 +56,25 @@ class Statistics {
             $wpdb->update(
                 $this->tableName,
                 array(
-                    'time_last_edited'=> $creationDate,
+                    'time_last_edited' => $creationDate,
                     'counter'         => $pageViews + 1
-               ),
+                ),
                 array(
                     'user_id'        => $userId,
                     'url'           => $url,
-               ),
-           );
-        }else{
+                ),
+            );
+        } else {
             $wpdb->insert(
                 $this->tableName,
                 array(
                     'time_created'   => $creationDate,
-                    'time_last_edited'=> $creationDate,
+                    'time_last_edited' => $creationDate,
                     'user_id'        => $userId,
                     'url'           => $url,
                     'counter'        => 1
-               )
-           );
+                )
+            );
         }
     }
 }

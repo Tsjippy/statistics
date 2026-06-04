@@ -1,15 +1,18 @@
 <?php
+
 namespace TSJIPPY\STATISTICS;
+
 use TSJIPPY;
 
 use function TSJIPPY\addElement;
 use function TSJIPPY\addRawHtml;
 
-if ( ! defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
-class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
+class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
+{
 
     /**
      * AdminMenu constructor.
@@ -17,23 +20,25 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
      * @param array $settings The settings for the plugin
      * @param string $name The name of the plugin
      */
-    public function __construct($settings, $name) {
+    public function __construct($settings, $name)
+    {
         parent::__construct($settings, $name);
     }
 
-    public function settings($parent) {
+    public function settings($parent)
+    {
         global $wp_roles;
 
         addElement('label', $parent, [], 'Who should see the statistics?');
         addElement('br', $parent);
 
-        foreach ($wp_roles->role_names as $key=>$name) {
+        foreach ($wp_roles->role_names as $key => $name) {
             $label  = addElement('label', $parent, [], $name);
             addElement('br', $parent);
 
             $attributes = [
-                'type'  =>'checkbox',
-                'name'  =>'view-rights[]',
+                'type'  => 'checkbox',
+                'name'  => 'view-rights[]',
                 'value' => $key
             ];
 
@@ -47,11 +52,13 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
         return true;
     }
 
-    public function emails($parent) {
+    public function emails($parent)
+    {
         return false;
     }
 
-    public function data($parent='') {
+    public function data($parent = '')
+    {
         if (!isset($_POST['exclude-list'])) {
             $_POST['exclude-list']    = '';
         }
@@ -72,7 +79,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             $users          = get_users(array(
                 'role'        => ['editor'],
                 'fields'    => 'ID'
-           ));
+            ));
 
             $placeholders   = implode(', ', array_fill(0, count($users), '%d'));
             $query        .= " AND `user_id` NOT IN ($placeholders)";
@@ -106,20 +113,20 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             $wpdb->prepare(
                 $query,
                 ...$values
-           )
+            )
         );
 
         ob_start();
         // Add a script to add a page to the exclusion
-        ?>
+?>
         <script>
             function addExclude(el) {
                 let form = document.getElementById('statistics-overview-settings');
-                let excludeList    = form.querySelector('#exclude-list');
+                let excludeList = form.querySelector('#exclude-list');
                 if (excludeList.value != '') {
-                    excludeList.value    = excludeList.value+','+el.value;
-                }else{
-                    excludeList.value    = el.value;
+                    excludeList.value = excludeList.value + ',' + el.value;
+                } else {
+                    excludeList.value = el.value;
                 }
 
                 form.submit();
@@ -129,18 +136,24 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             <h2>Statistics</h2>
 
             <form method='post' id='statistics-overview-settings'>
-                <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo $_POST['exclude-list'];?>'>
+                <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo $_POST['exclude-list']; ?>'>
                 <label>
-                    <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) { echo ' checked';} ?>>
+                    <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) {
+                                                                                echo ' checked';
+                                                                            } ?>>
                     Exclude editors
                 </label>
                 <br>
                 <label>
-                    Show Statistics from the last <input type='number' name='months' value='<?php echo $_POST['months'];?>' style='max-width: 60px;'> months only
+                    Show Statistics from the last <input type='number' name='months' value='<?php echo $_POST['months']; ?>' style='max-width: 60px;'> months only
                 </label>
                 <br>
                 <label>
-                    Show top <input type='number' name='max' value='<?php if (!isset($_POST['max'])) {echo 100;}else{echo $_POST['max'];}?>' style='max-width: 60px;'> pages only
+                    Show top <input type='number' name='max' value='<?php if (!isset($_POST['max'])) {
+                                                                        echo 100;
+                                                                    } else {
+                                                                        echo $_POST['max'];
+                                                                    } ?>' style='max-width: 60px;'> pages only
                 </label>
                 <br>
                 <input type='submit' value='Apply'>
@@ -155,28 +168,29 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
                 </thead>
                 <tbody>
                     <?php
-                        foreach ($pageViews as $page) {
-                            ?>
-                            <tr>
-                                <td class='url'><?php echo "<a href='$page->url'>" .explode('?', $page->url)[0]. "</a>";?></td>
-                                <td class='total-views'><?php echo $page->amount?></td>
-                                <td class='unique-views'><?php echo esc_attr($page->count);?></td>
-                                <td class='actions'><button class='small exclude-url' value='<?php echo $page->url; ?>' onclick='addExclude(this)'>Exclude</button></td>
+                    foreach ($pageViews as $page) {
+                    ?>
+                        <tr>
+                            <td class='url'><?php echo "<a href='$page->url'>" . explode('?', $page->url)[0] . "</a>"; ?></td>
+                            <td class='total-views'><?php echo $page->amount ?></td>
+                            <td class='unique-views'><?php echo esc_attr($page->count); ?></td>
+                            <td class='actions'><button class='small exclude-url' value='<?php echo $page->url; ?>' onclick='addExclude(this)'>Exclude</button></td>
                         </tr>
-                            <?php
-                        }
+                    <?php
+                    }
                     ?>
                 </tbody>
             </table>
         </div>
-        <?php
+<?php
 
         addRawHtml(ob_get_clean(), $parent);
 
         return true;
     }
 
-    public function functions($parent) {
+    public function functions($parent)
+    {
 
         return false;
     }

@@ -9,7 +9,7 @@ function blockRestApiInit()
 {
     // show schedules
     register_rest_route(
-        RESTAPIPREFIX . '/statistics',
+        TSJIPPY\RESTAPIPREFIX . '/statistics',
         '/page_statistics',
         array(
             'methods'                 => 'GET',
@@ -34,7 +34,7 @@ function statisticsWidget()
     global $wpdb;
 
     $tableName    = $wpdb->prefix . 'tsjippy_statistics';
-    $url        = str_replace(SITEURL, '', TSJIPPY\currentUrl());
+    $url        = str_replace(TSJIPPY\SITEURL, '', TSJIPPY\currentUrl());
 
     $pageViews  = $wpdb->get_results("SELECT * FROM $tableName WHERE url='$url' ORDER BY $tableName.`time_last_edited` DESC");
 

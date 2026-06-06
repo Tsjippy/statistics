@@ -14,7 +14,7 @@ add_filter('tsjippy_allowed_rest_api_urls', __NAMESPACE__ . '\restApiUrls');
  */
 function restApiUrls($urls)
 {
-    $urls[]    = RESTAPIPREFIX . '/statistics/add_page_view';
+    $urls[]    = TSJIPPY\RESTAPIPREFIX . '/statistics/add_page_view';
 
     return $urls;
 }
@@ -24,7 +24,7 @@ function restApiInit()
 {
     // Check for existing travel request
     register_rest_route(
-        RESTAPIPREFIX . '/statistics',
+        TSJIPPY\RESTAPIPREFIX . '/statistics',
         '/add_page_view',
         array(
             'methods'                 => \WP_REST_Server::CREATABLE,

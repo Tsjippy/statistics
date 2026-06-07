@@ -94,15 +94,15 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         }
 
         if (!empty($_POST['exclude-list'])) {
-            $placeholders   = implode(', ', array_fill(0, count($_POST['exclude-list']), '%d'));
+            $placeholders   = implode(', ', array_fill(0, count(TSJIPPY\sanitize($_POST['exclude-list'])), '%d'));
             $query        .= " AND `url` NOT IN ($placeholders)";
-            $values        = array_merge($values, $_POST['exclude-list']);
+            $values        = array_merge($values, TSJIPPY\sanitize($_POST['exclude-list']));
         }
 
         $query        .= " GROUP BY `url` ORDER BY `amount` DESC";
 
         $limit    = 100;
-        if (isset($_POST['max']) && is_numeric($_POST['max'])) {
+        if (is_numeric($_POST['max'] ?? '')) {
             $limit    = (int) $_POST['max'];
         }
         $query        .= " LIMIT $limit";
@@ -136,7 +136,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
             <h2>Statistics</h2>
 
             <form method='post' id='statistics-overview-settings'>
-                <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo $_POST['exclude-list']; ?>'>
+                <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo TSJIPPY\sanitize($_POST['exclude-list'] ?? ); ?>'>
                 <label>
                     <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) {
                                                                                 echo ' checked';
@@ -145,14 +145,14 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
                 </label>
                 <br>
                 <label>
-                    Show Statistics from the last <input type='number' name='months' value='<?php echo $_POST['months']; ?>' style='max-width: 60px;'> months only
+                    Show Statistics from the last <input type='number' name='months' value='<?php echo TSJIPPY\sanitize($_POST['months'] ?? ''); ?>' style='max-width: 60px;'> months only
                 </label>
                 <br>
                 <label>
                     Show top <input type='number' name='max' value='<?php if (!isset($_POST['max'])) {
                                                                         echo 100;
                                                                     } else {
-                                                                        echo $_POST['max'];
+                                                                        echo (int) $_POST['max'];
                                                                     } ?>' style='max-width: 60px;'> pages only
                 </label>
                 <br>

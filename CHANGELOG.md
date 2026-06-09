@@ -2,6 +2,17 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [10.1.2] - 2026-06-09
+
+
+### Added
 - shared functionality loader
 
 ### Changed
@@ -13,8 +24,6 @@
 
 ### Fixed
 - spacing problem
-
-### Updated
 
 ## [10.1.1] - 2026-06-03
 

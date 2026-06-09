@@ -65,6 +65,8 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
 
         global $wpdb;
 
+        wp_enqueue_script('tsjippy_statistics_admin', TSJIPPY\pathToUrl(PLUGINPATH . 'js/admin.min.js'), array(), PLUGINVERSION, true);
+
         $tableName    = $wpdb->prefix . 'tsjippy_statistics';
 
         // base query
@@ -117,26 +119,12 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         );
 
         ob_start();
-        // Add a script to add a page to the exclusion
 ?>
-        <script>
-            function addExclude(el) {
-                let form = document.getElementById('statistics-overview-settings');
-                let excludeList = form.querySelector('#exclude-list');
-                if (excludeList.value != '') {
-                    excludeList.value = excludeList.value + ',' + el.value;
-                } else {
-                    excludeList.value = el.value;
-                }
-
-                form.submit();
-            }
-        </script>
         <div class='pagestatistics'>
             <h2>Statistics</h2>
 
             <form method='post' id='statistics-overview-settings'>
-                <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo TSJIPPY\sanitize($_POST['exclude-list'] ?? ); ?>'>
+                <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo TSJIPPY\sanitize($_POST['exclude-list'] ?? [] ); ?>'>
                 <label>
                     <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) {
                                                                                 echo ' checked';
@@ -174,7 +162,11 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
                             <td class='url'><?php echo "<a href='$page->url'>" . explode('?', $page->url)[0] . "</a>"; ?></td>
                             <td class='total-views'><?php echo $page->amount ?></td>
                             <td class='unique-views'><?php echo esc_attr($page->count); ?></td>
-                            <td class='actions'><button class='small exclude-url' value='<?php echo $page->url; ?>' onclick='addExclude(this)'>Exclude</button></td>
+                            <td class='actions'>
+                                <button class='small exclude-url' value='<?php echo $page->url; ?>'>
+                                    Exclude
+                                </button>
+                            </td>
                         </tr>
                     <?php
                     }

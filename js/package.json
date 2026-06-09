@@ -5,7 +5,8 @@
   "main": "./statistics.js",
   "scripts": {
     "build": "webpack --entry ./statistics.js --output-path . --output-filename statistics.min.js --progress --mode=production --devtool source-map",
-    "all": "run-p build"
+    "admin": "webpack --entry ./admin.js --output-path . --output-filename admin.min.js --progress --mode=production --devtool source-map",
+    "all": "run-p build admin"
   },
   "author": "Ewald Harmsen",
   "license": "ISC",

@@ -5,7 +5,7 @@ namespace TSJIPPY\STATISTICS;
 use TSJIPPY;
 
 // Allow rest api urls for non-logged in users
-add_filter('tsjippy_allowed_rest_api_urls', __NAMESPACE__ . '\restApiUrls');
+add_filter('tsjippy-allowed-rest-api-urls', __NAMESPACE__ . '\restApiUrls');
 /**
  * Adds the statistics URLs to the list of allowed REST API URLs.
  *

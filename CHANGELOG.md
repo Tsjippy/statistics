@@ -4,11 +4,16 @@
 ### Added
 
 ### Changed
-- hook and filter name update
 
 ### Fixed
 
 ### Updated
+
+## [10.1.9] - 2026-06-18
+
+
+### Changed
+- hook and filter name update
 
 ## [10.1.8] - 2026-06-15
 

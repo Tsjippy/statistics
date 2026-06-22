@@ -60,26 +60,26 @@ class Statistics
         );
 
         if (is_numeric($pageViews)) {
-            $wpdb->update(
+            $result = TSJIPPY\updateDbValue(
                 $this->tableName,
                 array(
                     'time_last_edited' => $creationDate,
-                    'counter'         => $pageViews + 1
+                    'counter'          => $pageViews + 1
                 ),
                 array(
-                    'user_id'        => $userId,
-                    'url'           => $url,
+                    'user_id'          => $userId,
+                    'url'              => $url,
                 ),
+                [
+                    '%s',
+                    '%d'
+                ],
+                [
+                    '%d',
+                    '%s'
+                ],
+                'statistics'
             );
-
-             /**
-             * Flush db cache
-             */
-            if(wp_cache_supports( 'flush_group' )){
-                wp_cache_flush_group('statistics');
-            }else{
-                wp_cache_flush();
-            }
         } else {
             TSJIPPY\insertInDb(
                 $this->tableName,

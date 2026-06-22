@@ -5,6 +5,7 @@
 
 ### Changed
 - implemented db caching
+- replaced wpdb->update with updateDbFunction
 
 ### Fixed
 

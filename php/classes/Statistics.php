@@ -71,16 +71,33 @@ class Statistics
                     'url'           => $url,
                 ),
             );
+
+             /**
+             * Flush db cache
+             */
+            if(wp_cache_supports( 'flush_group' )){
+                wp_cache_flush_group('statistics');
+            }else{
+                wp_cache_flush();
+            }
         } else {
-            $wpdb->insert(
+            TSJIPPY\insertInDb(
                 $this->tableName,
                 array(
-                    'time_created'   => $creationDate,
+                    'time_created'     => $creationDate,
                     'time_last_edited' => $creationDate,
-                    'user_id'        => $userId,
-                    'url'           => $url,
-                    'counter'        => 1
-                )
+                    'user_id'          => $userId,
+                    'url'              => $url,
+                    'counter'          => 1
+                ),
+                [
+                    '%s',
+                    '%s',
+                    '%d',
+                    '%s',
+                    '%d',
+                ],
+                'statistics'
             );
         }
     }

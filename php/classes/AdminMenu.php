@@ -126,9 +126,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
             <form method='post' id='statistics-overview-settings'>
                 <input type='hidden' class='no-reset' name='exclude-list' id='exclude-list' value='<?php echo TSJIPPY\sanitize($_POST['exclude-list'] ?? [] ); ?>'>
                 <label>
-                    <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) {
-                                                                                echo ' checked';
-                                                                            } ?>>
+                    <input type='checkbox' name='exclude-editors' value=1 <?php if (!empty($_POST['exclude-editors'])) echo ' checked'; ?>>
                     Exclude editors
                 </label>
                 <br>
@@ -137,11 +135,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
                 </label>
                 <br>
                 <label>
-                    Show top <input type='number' name='max' value='<?php if (!isset($_POST['max'])) {
-                                                                        echo 100;
-                                                                    } else {
-                                                                        echo (int) $_POST['max'];
-                                                                    } ?>' style='max-width: 60px;'> pages only
+                    Show top <input type='number' name='max' value='<?php echo !isset($_POST['max']) ? 100 : (int) $_POST['max']; ?>' style='max-width: 60px;'> pages only
                 </label>
                 <br>
                 <input type='submit' value='Apply'>
@@ -163,7 +157,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
                             <td class='total-views'><?php echo $page->amount ?></td>
                             <td class='unique-views'><?php echo esc_attr($page->count); ?></td>
                             <td class='actions'>
-                                <button class='small exclude-url' value='<?php echo $page->url; ?>'>
+                                <button class='small exclude-url' value='<?php echo esc_attr($page->url); ?>'>
                                     Exclude
                                 </button>
                             </td>

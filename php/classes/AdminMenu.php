@@ -153,9 +153,17 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
                     foreach ($pageViews as $page) {
                     ?>
                         <tr>
-                            <td class='url'><?php echo "<a href='$page->url'>" . explode('?', $page->url)[0] . "</a>"; ?></td>
-                            <td class='total-views'><?php echo $page->amount ?></td>
-                            <td class='unique-views'><?php echo esc_attr($page->count); ?></td>
+                            <td class='url'>
+                                <a href='<?php echo esc_url($page->url);?>'>
+                                    <?php esc_html(explode('?', $page->url)[0]);?>
+                                </a>
+                            </td>
+                            <td class='total-views'>
+                                <?php echo $page->amount ?>
+                            </td>
+                            <td class='unique-views'>
+                                <?php echo esc_attr($page->count); ?>
+                            </td>
                             <td class='actions'>
                                 <button class='small exclude-url' value='<?php echo esc_attr($page->url); ?>'>
                                     Exclude

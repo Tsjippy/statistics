@@ -155,7 +155,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
                         <tr>
                             <td class='url'>
                                 <a href='<?php echo esc_url($page->url);?>'>
-                                    <?php esc_html(explode('?', $page->url)[0]);?>
+                                    <?php echo esc_html(explode('?', $page->url)[0]);?>
                                 </a>
                             </td>
                             <td class='total-views'>

@@ -9,6 +9,7 @@
 - better html
 
 ### Fixed
+- missing echo call
 
 ### Updated
 

@@ -55,7 +55,9 @@ function statisticsWidget()
     ob_start();
 ?>
     <div class='pagestatistics'>
-        <h4>Page statistics</h4>
+        <h4>
+            Page statistics
+        </h4>
         <table class='statistics-table'>
             <tbody>
                 <tr>

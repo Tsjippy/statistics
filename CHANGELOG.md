@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- statistics block is now php only
 
 ### Fixed
 

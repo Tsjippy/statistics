@@ -2,14 +2,21 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
-- block icon
 
 ### Changed
-- statistics block is now php only
 
 ### Fixed
 
 ### Updated
+
+## [10.3.3] - 2026-07-10
+
+
+### Added
+- block icon
+
+### Changed
+- statistics block is now php only
 
 ## [10.3.2] - 2026-07-06
 

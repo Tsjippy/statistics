@@ -15,6 +15,7 @@ function blockInit()
             'supports'        => array(
                 'autoRegister' => true,
             ),
+            'icon'  => 'plus'
         )
     );
 }

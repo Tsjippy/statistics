@@ -10,7 +10,7 @@ function blockInit()
     register_block_type(
         'tsjippy-statistics/show',
         array(
-            'title'           => __( 'Post Statistics', 'tsjippy' ),
+            'title'           => __( 'Post Statistics', '%TEXTDOMAIN%' ),
             'render_callback' => __NAMESPACE__.'\postStatistics',
             'supports'        => array(
                 'autoRegister' => true,

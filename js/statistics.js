@@ -15,11 +15,18 @@ window.addEventListener("hashchange", function () {
 
 function sendStatistics() {
   var formData = new FormData();
+  
+  const data   = JSON.parse(
+    document.getElementById(
+        'wp-script-module-data-@tsjippy/statistics_script'
+    ).textContent
+  );
+
   formData.append("url", window.location.href);
-  formData.append("_wpnonce", tsjippy.restNonce);
+  formData.append("_wpnonce", data.restNonce);
 
   fetch(
-    `${tsjippy.baseUrl}/wp-json${tsjippy.restApiPrefix}/statistics/add_page_view`,
+    `${data.baseUrl}/wp-json${data.restApiPrefix}/statistics/add_page_view`,
     {
       method: "POST",
       credentials: "same-origin",

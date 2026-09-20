@@ -79,7 +79,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
 
         global $wpdb;
 
-        wp_enqueue_script_module('@tsjippy/statistics_admin', TSJIPPY\pathToUrl(PLUGINPATH . 'js/admin.min.js'), array(), PLUGINVERSION);
+        wp_enqueue_script_module('@tsjippy/statistics_admin', TSJIPPY\pathToUrl(PLUGINPATH . 'js/admin' . TSJIPPY\JSEXTENSION), array(), PLUGINVERSION);
 
         $tableName    = $wpdb->prefix . 'tsjippy_statistics';
 

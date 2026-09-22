@@ -71,6 +71,11 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         return false;
     }
 
+    /**
+     * Renders the data tab
+     * 
+     * @param   string|\DOMElement  $parent Parent element
+     */
     public function data($parent = '')
     {
         if (!isset($_POST['exclude-list'])) {

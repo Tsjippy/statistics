@@ -1,3 +1,5 @@
+import "@tsjippy/nonce_script";
+
 //Load after page load
 document.addEventListener("DOMContentLoaded", function () {
   if (window["statisticsSent"] == undefined) {
@@ -18,7 +20,7 @@ function sendStatistics() {
   
   const data   = JSON.parse(
     document.getElementById(
-        'wp-script-module-data-@tsjippy/statistics_script'
+        'wp-script-module-data-@tsjippy/nonce_script'
     ).textContent
   );
 

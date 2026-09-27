@@ -5,13 +5,13 @@ namespace TSJIPPY\STATISTICS;
 /**
  * Plugin Name:          Tsjippy Statistics
  * Description:          This plugin stores page visits per user in the db and makes them visible on the page depending on the users role
- * Version:              10.6.8
+ * Version:              10.6.9
  * Author:               Ewald Harmsen
  * AuthorURI:            harmseninnigeria.nl
  * Requires at least:    6.3
  * Requires PHP:         8.3
  * Plugin URI:           https://github.com/Tsjippy/statistics
- * Tested:               7.1.2
+ * Tested:               7.1
  * TextDomain:           tsjippy
  * Requires Plugins:    
  * License: GPLv2 or later
